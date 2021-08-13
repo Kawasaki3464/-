@@ -1,0 +1,44 @@
+void merge(int arr[], int l, int m, int r ){
+	// use a assitant container
+	int assi[] = (int*)malloc((l -r +1)*sizeof(int));  //有错误的地方。
+	int i = 0; 
+	int p1 =l;
+	int p2 = m +1;
+	while( p1<=m && p2 <= r){ //two parts do not exceed the range 
+	assi[i++] = arr[p1] <= arr[p2] ? arr[p1++] :arr[p2++];
+	}
+	while(p1 <= m){
+		assi[i++] =arr[p1++];
+	}
+	while(p2 >= r){
+		assi[i++] = arr[p2++];
+	}
+	int length = sizeof(assi)/sizeof(int);
+	//paste back to the original container
+	for(i =0; i< length; i++){
+		arr[l +i] = assi[i++]; // not originate from 0 for l; its a variable
+	}
+}
+void process(int arr[], int l, int r){
+	if(r == l){
+		return;
+	}
+	int mid = l +((r -l )>>1);
+	process(arr, l, mid);
+	process(arr, mid +1, r);
+	merge(arr, l, mid, r);
+}
+
+int main(){
+	int arr[]= {1, 3,5,7,56,7,98};
+	int size = (sizeof(arr)/sizeof(int)) -1;
+	int r = size -1;
+	int l =0;
+	process(arr, l, r);
+	for(int i =0; i< size; i++){
+		printf("the Num is: %d\n", arr[i]);
+	}
+	
+	return 0;
+	
+}
